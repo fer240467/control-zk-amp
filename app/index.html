@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:">
+<title>Control ZK Amp</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="img/icon.svg">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img class="logo" src="img/icon.svg" alt="" aria-hidden="true">
+    <div>
+      <h1>Control ZK Amp</h1>
+      <p class="sub" id="devName">Sin conectar</p>
+    </div>
+  </div>
+  <button class="gift" id="btnGift" title="Regalo para el creador">🎁 Regalo</button>
+</header>
+
+<main>
+  <!-- Conexión -->
+  <section class="card" id="secConn">
+    <div class="row between">
+      <h2>Conexión</h2>
+      <span class="pill" id="connState">Desconectado</span>
+    </div>
+    <p class="hint">Encendé la placa y tocá <b>Buscar placa</b>. Los equipos marcados “solo audio” no admiten control por app.</p>
+    <div class="row gap">
+      <button class="primary" id="btnScan">Buscar placa</button>
+      <button id="btnDisconnect" hidden>Detener búsqueda</button>
+    </div>
+    <ul class="devlist" id="devList"></ul>
+    <p class="info" id="prodInfo"></p>
+  </section>
+
+  <div id="controls" class="locked">
+  <!-- Fuente y Bluetooth -->
+  <section class="card">
+    <h2>Fuente de audio y Bluetooth</h2>
+    <details class="help"><summary>¿Para qué sirve?</summary>
+      <p>Elige <b>de dónde</b> sale la música que amplifica la placa.</p>
+      <p><b>Bluetooth:</b> suena lo que mandes desde el celular o la PC. <b>AUX:</b> suena lo que esté enchufado al cable de 3,5 mm (TV, PC, consola) y se ignora el Bluetooth.</p>
+      <p><b>Cortar audio Bluetooth del celular</b> desconecta el audio sin apagar la placa. El control desde esta app sigue funcionando.</p>
+    </details>
+    <div class="seg" id="segSource">
+      <button data-v="1">Bluetooth</button>
+      <button data-v="3">AUX</button>
+    </div>
+    <details class="more">
+      <summary>Otras placas (con USB o tarjeta de sonido)</summary>
+      <div class="seg" id="segSource2">
+        <button data-v="2">USB / pendrive</button>
+        <button data-v="4">Tarjeta de sonido (PC)</button>
+      </div>
+      <p class="hint">La ZK-MT21 no tiene estas entradas; sirven para otros modelos de la misma línea.</p>
+    </details>
+    <p class="hint">Elegir <b>AUX</b> apaga el audio por Bluetooth. Elegir <b>Bluetooth</b> lo vuelve a activar.</p>
+    <div class="row gap">
+      <button id="btnBtOff">Cortar audio Bluetooth del celular</button>
+    </div>
+  </section>
+
+  <!-- Modo -->
+  <section class="card">
+    <h2>Modo de control</h2>
+    <details class="help"><summary>¿Para qué sirve?</summary>
+      <p>Decide <b>quién manda en el sonido</b>:</p>
+      <p><b>Perillas:</b> mandan los 5 botones físicos de la placa (bass, treble, sub). <b>EQ app:</b> manda el ecualizador de 10 bandas de esta app. <b>Filtro DSP:</b> mandan los cortes de frecuencia y las ganancias de la sección “Filtro DSP”.</p>
+      <p>Si un cambio de la app “no hace nada”, revisá que estés en el modo correcto. Según el firmware, algunas placas no tienen todos los modos.</p>
+    </details>
+    <div class="seg" id="segMode">
+      <button data-v="0">Perillas</button>
+      <button data-v="1">EQ app</button>
+      <button data-v="2">Filtro DSP</button>
+    </div>
+    <p class="hint">En <b>Perillas</b> manda la placa. En <b>EQ app</b> o <b>Filtro DSP</b> mandan los ajustes de abajo.</p>
+  </section>
+
+  <!-- Ganancia -->
+  <section class="card">
+    <h2>Volumen / ganancia máxima</h2>
+    <details class="help"><summary>¿Para qué sirve?</summary>
+      <p>Es el <b>tope de volumen</b> de la placa (0 a 30). La perilla MAIN VOLUME y el volumen del celular quedan por debajo de este tope.</p>
+      <p>Si al subir todo el sonido “se rompe” o los graves golpean feo, bajá este valor hasta que deje de distorsionar. Así cuidás los parlantes y la placa calienta menos.</p>
+    </details>
+    <div class="slider">
+      <input type="range" id="gain" min="0" max="30" value="20">
+      <output id="gainOut">20</output>
+    </div>
+    <p class="hint">Bajarla un poco evita distorsión y calentamiento con fuentes de 12 V.</p>
+  </section>
+
+  <!-- EQ -->
+  <section class="card">
+    <div class="row between">
+      <h2>Ecualizador 10 bandas</h2>
+      <select id="eqPreset" aria-label="Preajuste">
+        <option value="">Preajustes…</option>
+      </select>
+    </div>
+    <details class="help"><summary>¿Para qué sirve?</summary>
+      <p>Sube o baja <b>10 zonas del sonido</b> (±12 dB). Funciona en el modo <b>EQ app</b>.</p>
+      <p><b>31–125 Hz:</b> graves y golpe del bombo. <b>250–500 Hz:</b> cuerpo (si suena “a caja”, bajalo). <b>1k–4k:</b> voces y presencia. <b>8k–16k:</b> brillo, platillos, aire.</p>
+      <p>Consejo: es mejor <b>bajar</b> lo que sobra que subir todo; así se evita la distorsión. Los preajustes son un buen punto de partida.</p>
+    </details>
+    <div class="eq" id="eqBands"></div>
+    <div class="row gap">
+      <button id="btnEqFlat">Plano</button>
+      <button class="primary" id="btnEqSend">Aplicar EQ</button>
+    </div>
+  </section>
+
+  <!-- DSP -->
+  <section class="card">
+    <h2>Filtro DSP (modo “Filtro DSP”)</h2>
+    <details class="help"><summary>¿Para qué sirve?</summary>
+      <p>Reparte las frecuencias entre los parlantes y el subwoofer (un <b>crossover</b>), para que cada uno toque lo que mejor sabe.</p>
+      <p>Tu placa tiene 3 salidas: <b>L</b> y <b>R</b> (parlantes izquierdo y derecho) y <b>S</b> (subwoofer).</p>
+      <p><b>Parlantes:</b> lo ideal es que <b>no toquen graves profundos</b>, porque los parlantes chicos se esfuerzan y distorsionan. Poné “Graves: desde dónde suenan” en 80–120 Hz y “Agudos” en 20 kHz.</p>
+      <p><b>Subwoofer:</b> solo graves. “Hasta dónde llega el sub” en 80–120 Hz, cerca de donde empiezan los parlantes, para que no quede un hueco ni se pisen.</p>
+      <p>La <b>barra de colores</b> de arriba muestra qué rango toca cada uno. <b>Balance:</b> si un lado suena más fuerte, bajalo un poco.</p>
+      <p>¿No sabés qué poner? Tocá <b>Valores recomendados</b>.</p>
+    </details>
+    <!-- mapa visual de frecuencias -->
+    <div class="fmap" aria-hidden="true">
+      <div class="ftrack">
+        <div class="frange sub" id="mapSub"><span>Sub</span></div>
+        <div class="frange spk" id="mapSpk"><span>Parlantes</span></div>
+      </div>
+      <div class="fscale"><span>20 Hz</span><span>100</span><span>1 kHz</span><span>10 kHz</span><span>20 kHz</span></div>
+      <p class="hint" id="mapNote"></p>
+    </div>
+
+    <div class="group spk">
+      <h3><span class="dot"></span>Parlantes izquierdo y derecho <small>(salidas L y R)</small></h3>
+      <label class="lbl">Volumen de los parlantes <span id="stGainOut"></span></label>
+      <p class="tip">Qué tan fuerte suenan los parlantes L y R comparados con el sub.</p>
+      <input type="range" id="stGain" min="0" max="14" value="10">
+      <label class="lbl">Graves: desde dónde suenan <span id="stLoOut"></span></label>
+      <p class="tip">Debajo de este valor los parlantes se callan y esos graves los toca el sub. Recomendado: <b>80–120 Hz</b>.</p>
+      <input type="range" id="stLo" min="0" max="45" value="2">
+      <label class="lbl">Agudos: hasta dónde suenan <span id="stHiOut"></span></label>
+      <p class="tip">El tope de agudos. Dejalo en <b>20 kHz</b>; bajalo solo si suena chillón o con soplido.</p>
+      <input type="range" id="stHi" min="0" max="45" value="45">
+    </div>
+
+    <div class="group sub">
+      <h3><span class="dot"></span>Subwoofer <small>(salida S)</small></h3>
+      <label class="lbl">Volumen del subwoofer <span id="subGainOut"></span></label>
+      <p class="tip">Cuánto “bajo” querés. Subilo de a poco hasta que acompañe sin tapar las voces.</p>
+      <input type="range" id="subGain" min="0" max="14" value="10">
+      <label class="lbl">Grave más profundo <span id="subLoOut"></span></label>
+      <p class="tip">El sub no reproduce nada más grave que esto. Dejalo en <b>20 Hz</b>; subilo a 30–40 Hz si el sub es chico y “flamea”.</p>
+      <input type="range" id="subLo" min="0" max="9" value="0">
+      <label class="lbl">Hasta dónde llega el sub <span id="subHiOut"></span></label>
+      <p class="tip">Arriba de este valor el sub se calla. Ponelo igual o un poco por encima de “Graves: desde dónde suenan” de los parlantes (<b>80–120 Hz</b>).</p>
+      <input type="range" id="subHi" min="0" max="9" value="5">
+    </div>
+
+    <div class="group bal">
+      <h3><span class="dot"></span>Balance izquierda / derecha</h3>
+      <label class="lbl">Ajuste parlante izquierdo <span id="balLOut"></span></label>
+      <p class="tip">Si el lado izquierdo suena más fuerte, bajalo un poco.</p>
+      <input type="range" id="balL" min="0" max="20" value="10">
+      <label class="lbl">Ajuste parlante derecho <span id="balROut"></span></label>
+      <p class="tip">Lo mismo para el lado derecho.</p>
+      <input type="range" id="balR" min="0" max="20" value="10">
+    </div>
+    <div class="row gap">
+      <button id="btnDspDefault">Valores recomendados</button>
+    </div>
+  </section>
+
+  <!-- Ajustes -->
+  <section class="card">
+    <h2>Ajustes</h2>
+    <label class="switch"><input type="checkbox" id="beep" checked> <span>Pitido / voz de aviso</span></label>
+    <div class="row gap">
+      <button id="btnRead">Leer estado de la placa</button>
+    </div>
+  </section>
+  </div>
+
+  <!-- Guía -->
+  <section class="card">
+    <h2>Guía rápida para mejor sonido</h2>
+    <details class="help"><summary>Primeros pasos</summary>
+      <p>1. Encendé la placa y conectá el celular al Bluetooth de audio, como siempre.</p>
+      <p>2. En esta app tocá <b>Buscar placa</b> y elegí el equipo marcado en dorado (su nombre suele terminar en “APP” o “BLE”).</p>
+      <p>3. Elegí el <b>Modo de control</b> y ajustá.</p>
+    </details>
+    <details class="help"><summary>Más rendimiento sin dañar nada</summary>
+      <p>• Usá una fuente de <b>24 V</b> si la placa la acepta (DC 12–24 V): da más potencia y menos distorsión que una de 12 V.</p>
+      <p>• Cortá los graves de los parlantes chicos (80–120 Hz) y dejá que el sub los toque: todo suena más fuerte y limpio.</p>
+      <p>• Si distorsiona, bajá la <b>ganancia máxima</b> antes que el EQ.</p>
+      <p>• La placa calienta: dejale ventilación y no la tapes.</p>
+    </details>
+    <details class="help"><summary>Problemas comunes</summary>
+      <p>• <b>Aparece como “solo audio”:</b> esa placa solo recibe música por Bluetooth y no tiene canal de control; ninguna app puede ajustarla.</p>
+      <p>• <b>Sigue sin aparecer:</b> activá Bluetooth y Ubicación o “Dispositivos cercanos” en el celular, y acercate a la placa.</p>
+      <p>• <b>Conecta pero no cambia nada:</b> revisá el Modo de control.</p>
+      <p>• <b>Se corta el audio:</b> elegí la fuente Bluetooth otra vez y reconectá el celular.</p>
+    </details>
+  </section>
+
+  <!-- Registro -->
+  <details class="card log">
+    <summary>Registro técnico</summary>
+    <pre id="log"></pre>
+  </details>
+
+  <footer>
+    <p>Proyecto independiente, sin relación con el fabricante. Compatible con placas ZK con chip Bluetooth JieLi (ZK-MT21 y similares). Úsalo bajo tu propio riesgo.</p>
+  </footer>
+</main>
+
+<dialog id="giftDlg">
+  <h3>🎁 ¿Te sirvió la app?</h3>
+  <p>Es gratis y sin publicidad. Si querés, podés hacerle un regalo al creador.</p>
+  <div class="row gap">
+    <button class="primary" id="btnGiftGo">Regalar con PayPal</button>
+    <button id="btnGiftClose">Ahora no</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/jl-auth.js"></script>
+<script src="js/rcsp.js"></script>
+<script src="js/transport.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

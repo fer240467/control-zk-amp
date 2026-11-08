@@ -1,0 +1,46 @@
+{
+  "name": "control-zk-amp",
+  "productName": "Control ZK Amp",
+  "version": "1.1.0",
+  "description": "Control por Bluetooth para placas amplificadoras ZK con chip JieLi (ZK-MT21 y similares).",
+  "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "uy.controlzkamp.app",
+    "productName": "Control ZK Amp",
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "portable": {
+      "artifactName": "ControlZKAmp-${version}.exe"
+    }
+  },
+  "allowScripts": {
+    "electron@31.7.7": true
+  }
+}

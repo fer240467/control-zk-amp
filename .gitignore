@@ -1,0 +1,23 @@
+# Herramientas y material de ingeniería inversa (no se publican)
+_apk/
+_apk32/
+_tools/
+build-assets/
+
+# Dependencias y binarios
+node_modules/
+windows/node_modules/
+windows/dist/
+windows/app/
+android/out/
+android/assets/
+
+# Clave de firma (NUNCA se publica)
+*.keystore
+*.jks
+
+# Varios
+*.log
+.DS_Store
+Thumbs.db
+tools/

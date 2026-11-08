@@ -304,16 +304,6 @@
     $('devName').textContent = 'Sin conectar';
   };
 
-  // ----- regalo -----
-  const dlg = $('giftDlg');
-  $('btnGift').onclick = () => dlg.showModal();
-  $('btnGiftClose').onclick = () => dlg.close();
-  $('btnGiftGo').onclick = () => {
-    dlg.close();
-    if (!CFG.donateUrl) { toast('Link de regalo próximamente'); return; }
-    (transport || window.createTransport()).openUrl(CFG.donateUrl);
-  };
-
   // Modo automático (diagnóstico por ADB): busca el equipo por nombre o dirección y conecta solo.
   window.__autoConnect = (target) => {
     log('Modo automático: buscando ' + target);

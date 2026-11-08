@@ -65,10 +65,6 @@ button.primary {
   background: var(--gold-grad); color: var(--ink); border-color: transparent; font-weight: 700;
   box-shadow: 0 4px 16px rgba(212,175,55,.28);
 }
-.gift {
-  background: transparent; border: 1px solid var(--gold); color: var(--gold-hi);
-  padding: 7px 14px; min-height: 36px; font-weight: 600;
-}
 .pill { font-size: 12px; padding: 4px 12px; border-radius: 99px; background: #2c1b19; color: var(--bad); }
 .pill.on { background: #16261d; color: var(--ok); }
 .pill.busy { background: #2b2412; color: var(--gold-hi); }

@@ -95,22 +95,6 @@ sh build.sh       # genera out/ControlZKAmp-x.y.z.apk (firmado)
 
 ---
 
-## 🎁 Botón de regalo (donaciones)
-
-La app trae un botón **🎁 Regalo** opcional. El enlace se configura en
-[`app/js/config.js`](app/js/config.js):
-
-```js
-window.APP_CONFIG = {
-  donateUrl: '',   // poné aquí tu enlace, por ejemplo https://paypal.me/tuusuario
-};
-```
-
-Mientras esté vacío, el botón muestra "próximamente". Recomendado: PayPal.Me (mundial)
-y/o Cafecito (Argentina/Uruguay).
-
----
-
 ## 🔍 Notas técnicas
 
 - Las placas ZK con control usan el protocolo **RCSP** de JieLi sobre BLE

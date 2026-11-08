@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="uy.controlzkamp" android:versionCode="12" android:versionName="1.1.1">
+    package="uy.controlzkamp" android:versionCode="13" android:versionName="1.1.2">
     <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="35" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
